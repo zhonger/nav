@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title> zhongerのPage </title>
+        <meta name="author" content="zhonger">
+        <meta name="description" content="个人导航页，纯静态。">
+        <meta name="keywords" content="zhonger，zhonger的个人导航页，vuejs，静态">
+        <link rel="Shortcut Icon" href="./favicon.ico">
+        <link rel="bookmark" href="./favicon.ico" type="image/x-icon">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">       
+        <link rel="stylesheet" href="icofont.min.css">
+        <link rel="stylesheet" href="nav.css">
+        
+    </head>
+    <body>
+        <div id="app" v-cloak>
+            <head>
+                <div id="header" v-if="header_auto" class="jinrishici-sentence">
+                    {{ header }}
+                </div>
+                <div id="header" v-else>
+                    {{ header }}
+                </div>
+                <div id="search">
+                    <div id="search-form">
+                        <a class="search-engine" @click="Dropdown"><i v-bind:class="search_engine_class"></i></a>           
+                        <input v-model="search_content" class="search-content" type="text" placeholder="Search ..." @input="SearchUrl" v-on:keyup.enter="Submit" :maxlength="max">
+                        <a v-bind:href="search_url" class="search-button" target="_blank" rel="noreferrer"><i class="icofont-search-1"></i></a>
+                    </div>                    
+                    <div id="search-engines">
+                        <div id="dropdown" class="dropdown-content">
+                            <a v-for="search_engine in search_engines" class="ico" @click="ChangeSearchEngine(search_engine.id, $event)" id=""><i v-bind:class="search_engine.class"></i> {{search_engine.name}} </a>
+                        </div>
+                    </div>
+                </div>
+            </head>
+            <main>
+                <div id="sites">
+                    <div class="container">
+                        <div class="bar" v-if="!isNull" v-for="item in items">
+                            <div class="title"> <i class="icofont icofont-compass"></i> {{ item.type }} </div>
+                            <div class="card" v-for="site in item.sites">                                
+                                <a v-bind:href="site.url" target="_blank" class="name" rel="noreferrer"> <span class="icon"><img v-bind:src="site.icon" alt="ico"></span> {{ site.name }} </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer>
+                <div id="copyright">
+                    本导航由 <a href="https://github.com/zhonger/nav" target="_blank"  rel="noreferrer">Nav</a> 强力驱动，页面内容解释权归  <a v-bind:href="homepage" target="_blank"  rel="noreferrer"> @{{ author }} </a>  所有
+                </div>
+            </footer>
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@3.2.11/dist/vue.global.prod.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!-- <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script> -->
+        <script>
+
+            const app = {
+                data() {       
+                    return {
+                        header: "春花秋月何时了，往事知多少。",
+                        header_auto: false,
+                        isNull: true,
+                        items: [],
+                        author: "zhonger",
+                        homepage: "https://lisz.me",
+                        search_engines: [],
+                        search_engine_id: 0,
+                        search_content: "",
+                        search_engine_class: "",
+                        search_url:"",
+                        max: 225
+                    }
+                },
+                created: function() {
+                    this.LoadSites();
+                },
+                methods: {
+                    LoadSites: function () {
+                        var vm = this;
+                        axios.get('./sites.json')
+                        .then(function (response) {
+                            if(response.data !== null){
+                                vm.isNull = false;
+                                if(response.data.links !== undefined && response.data.links !== null){
+                                    vm.items = response.data.links;  
+                                    for(item of vm.items){
+                                        for(site of item.sites){
+                                            if(site.url != ""){
+                                                domain = site.url.split('/')[2];
+                                                // site.icon = "https://www.google.cn/s2/favicons?domain_url=" + domain;
+                                                site.icon = "https://www.google.cn/s2/favicons?sz=32&domain_url=" + domain;
+                                            }
+                                        }
+                                    }
+                                }                                  
+                                if(response.data.header_auto !== undefined && response.data.header_auto!== null){
+                                    vm.header_auto = response.data.header_auto;
+                                }
+                                if(response.data.header !== undefined && response.data.header!== null){
+                                        vm.header = response.data.header; 
+                                    }
+                                if(vm.header_auto){
+                                    vm.header = "";
+                                    var script = document.createElement('script');
+                                    script.src = "https://sdk.jinrishici.com/v2/browser/jinrishici.js";
+                                    var firstScript = document.getElementsByTagName('script')[0];
+                                    firstScript.parentNode.insertBefore(script,firstScript);
+                                }
+                                if(response.data.author !== undefined && response.data.author !== null){
+                                    vm.author = response.data.author; 
+                                }
+                                if(response.data.homepage !== undefined && response.data.homepage !== null){
+                                    vm.homepage = response.data.homepage; 
+                                }                             
+                                if(response.data.search_engines !== undefined && response.data.search_engines !== null){
+                                    vm.search_engines = response.data.search_engines;
+                                    var i = 0; 
+                                    for(search_engine of vm.search_engines){
+                                        search_engine.id = i;
+                                        search_engine.class = search_engine.class;
+                                        i++;
+                                    }
+                                    vm.search_engine_class = vm.search_engines[vm.search_engine_id].class;
+                                    vm.search_url = vm.search_engines[vm.search_engine_id].url;
+                                }
+                                                           
+                            }              
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    },
+                    SearchUrl: function (){
+                        this.search_url = this.search_engines[this.search_engine_id].url + this.search_content;
+                        return this.search_url;
+                    },
+                    Submit: function (){
+                        window.open(this.search_url, "_blank");
+                    },
+                    Dropdown: function (){
+                        document.getElementById("dropdown").classList.toggle("show");
+                    },
+                    SearchEngineEnable: function (){
+                        className = this.search_engines[this.search_engine_id].class;
+                        return className;
+                    },
+                    ChangeSearchEngine: function (id, event){
+                        this.search_engine_id = id;
+                        this.search_engine_class = this.search_engines[this.search_engine_id].class;
+                        this.search_url = this.search_engines[this.search_engine_id].url + this.search_content;
+                        document.getElementById("dropdown").classList.toggle("show");
+                    }
+                }
+            }
+
+            Vue.createApp(app).mount("#app")
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,61 @@
+{
+    "author": "zhonger",
+    "homepage": "https://lisz.me",
+    "header": "明月几时有，把酒问青天。",
+    "header_auto": true,
+    "search_engines": [
+        {
+            "name": "Google 搜索",
+            "class": "fa fa-google",
+            "url": "https://www.google.co.jp/search?q="
+        },
+        {
+            "name": "必应搜索",
+            "class": "icofont icofont-brand-bing",
+            "url": "https://bing.com/search?q="
+        },
+        {
+            "name": "Steam 搜索",
+            "class": "icofont icofont-brand-steam",
+            "url": "https://bing2.com/search?q="
+        },
+        {
+            "name": "Omega 搜索",
+            "class": "icofont icofont-brand-omega",
+            "url": "https://bing3.com/search?q="
+        },
+        {
+            "name": "IMDB 搜索",
+            "class": "icofont icofont-brand-imdb",
+            "url": "https://bing4.com/search?q="
+        }
+    ],
+    "links": [
+        {
+            "type": "常用网站1",
+            "sites": [
+                {
+                    "name": "博客",
+                    "url": "https://lisz.me"
+                },
+                {
+                    "name": "谷歌学术",
+                    "url": "https://scholar.google.com"
+                }
+            ]
+        },
+        {
+            "type": "常用网站2",
+            "sites": [
+                {
+                    "name": "筑波大学",
+                    "url": "https://www.tsukuba.ac.jp"
+                },
+                {
+                    "name": "NIMS",
+                    "url": "https://www.nims.go.jp"
+                }
+            ]
+        }
+    ]
+}
