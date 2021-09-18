@@ -6,7 +6,7 @@
   display: none;
 }
 
-@font-face{font-family:"FZXiJinLJW";src:url(https://cdn.jsdelivr.net/gh/zhonger/nav@main/FZXiJinLJW.ttf) format("truetype")}
+@font-face{font-family:"FZXiJinLJW";src:url(https://cdn.jsdelivr.net/gh/zhonger/nav@main/FZXiJinLJW.TTF) format("truetype")}
 
 body {
   background: #f7f8f9;
