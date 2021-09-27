@@ -34,11 +34,65 @@
                     </div>                    
                     <div id="search-engines">
                         <div id="dropdown" class="dropdown-content">
-                            <a v-for="search_engine in search_engines" class="ico" @click="ChangeSearchEngine(search_engine.id, $event)" id=""><i v-bind:class="search_engine.class"></i> {{search_engine.name}} </a>
+                            <a v-for="search_engine in search_engines" class="ico" @click="ChangeSearchEngine(search_engine.id, $event)" id=""><i v-bind:class="search_engine.class"></i> {{ search_engine.name }} </a>
                         </div>
                     </div>
                 </div>
             </head>
+            <div class="loading isActive"> <img src="loading.gif" alt=""> </div>
+            <div id="message">
+                <span v-if="lang === 'zh'">抱歉，无法找到设定的城市!</span>
+                <span v-else>The city cannot be found!</span>
+            </div>
+            <div id="weather" class="isActive" v-cloak>
+                <div class="info">
+                    <div class="location">
+                        <a v-bind:href="city_link" target="_blank" rel="noreferrer">
+                            <span v-bind:title="citye_name"> {{ city_name }} </span>
+                        </a>
+                    </div>
+                    <div class="qweather">
+                        <a href="https://www.qweather.com" target="_blank" rel="noreferrer" v-if="lang === 'zh'">和风天气</a>
+                        <a href="https://www.qweather.com" target="_blank" rel="noreferrer" v-else>Qweather</a>
+                    </div>
+                </div>
+                <div class="left">
+                    <div class="w-now">
+                        <div class="icon">
+                            <img v-bind:src="weather_now.cond_img" alt="" / v-cloak>
+                        </div>
+                        <div class="content">
+                            <div class="tmp">
+                                <span> {{ weather_now.tmp }}° </span>
+                            </div>
+                            <div class="txt">
+                                <span> {{ weather_now.cond_txt }} </span>
+                                <div class="aqi" v-bind:class="weather_now.aqiClass">
+                                    <span> {{ weather_now.qlty }} </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="now-rain">
+                            <div>
+                                <img v-bind:src="weather_now_rain_img" alt="now-rain" />
+                            </div>    
+                            <span class="rain-txt"> {{ weather_now.rain_txt }} </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="forecast">
+                        <ul class="item" v-for="weather in weather_forecasts">
+                            <li class="date"> {{ weather.day }} </li>
+                            <li class="img">
+                                <img v-bind:src="weather.img" alt="">
+                            </li>
+                            <li class="tmp"> {{ weather.tmp_min }}°/{{ weather.tmp_max }}° </li>
+                            <li class="aqi" v-bind:class="weather.aqiClass"> {{ weather.qlty }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <main>
                 <div id="sites">
                     <div class="container">
@@ -52,16 +106,19 @@
                 </div>
             </main>
             <footer>
-                <div id="copyright">
+                <div id="copyright" v-if="lang === 'zh'">
                     本导航由 <a href="https://github.com/zhonger/nav" target="_blank"  rel="noreferrer">Nav</a> 强力驱动，页面内容解释权归  <a v-bind:href="homepage" target="_blank"  rel="noreferrer"> @{{ author }} </a>  所有
+                </div>
+                <div id="copyright" v-else>
+                    Powered by <a href="https://github.com/zhonger/nav" target="_blank"  rel="noreferrer">Nav</a> |   Copyright &copy; <a v-bind:href="homepage" target="_blank"  rel="noreferrer"> {{ author }} </a>
                 </div>
             </footer>
         </div>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/vue@3.2.11/dist/vue.global.prod.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <!-- <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script> -->
+        <script nonce="r4sdsdn" src="https://cdn.jsdelivr.net/npm/vue@3.2.11/dist/vue.global.prod.min.js"></script>
+        <script nonce="723da1e" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        
         <script>
 
             const app = {
@@ -78,7 +135,16 @@
                         search_content: "",
                         search_engine_class: "",
                         search_url:"",
-                        max: 225
+                        max: 225,
+                        lang: "zh",
+                        qweather_key: "fe7ebd5f6517481d8443f020f7ecd7ef",
+                        qweather_key2: "d69076a225bb4dd29a8af66a0bc1d8b4",
+                        city_id: "CN101010100",
+                        city_name: "",
+                        city_link: "",
+                        weather_now: [],
+                        weather_forecasts: [],
+                        weather_now_rain_img: "https://cdn.heweather.com/img/plugin/190516/icon/view/rain.png"
                     }
                 },
                 created: function() {
@@ -91,7 +157,7 @@
                         .then(function (response) {
                             if(response.data !== null){
                                 vm.isNull = false;
-                                if(response.data.links !== undefined && response.data.links !== null){
+                                if(response.data.links !== undefined && response.data.links !== ""){
                                     vm.items = response.data.links;  
                                     for(item of vm.items){
                                         for(site of item.sites){
@@ -103,10 +169,10 @@
                                         }
                                     }
                                 }                                  
-                                if(response.data.header_auto !== undefined && response.data.header_auto!== null){
+                                if(response.data.header_auto !== undefined && response.data.header_auto!== ""){
                                     vm.header_auto = response.data.header_auto;
                                 }
-                                if(response.data.header !== undefined && response.data.header!== null){
+                                if(response.data.header !== undefined && response.data.header!== ""){
                                         vm.header = response.data.header; 
                                     }
                                 if(vm.header_auto){
@@ -116,13 +182,13 @@
                                     var firstScript = document.getElementsByTagName('script')[0];
                                     firstScript.parentNode.insertBefore(script,firstScript);
                                 }
-                                if(response.data.author !== undefined && response.data.author !== null){
+                                if(response.data.author !== undefined && response.data.author !== ""){
                                     vm.author = response.data.author; 
                                 }
-                                if(response.data.homepage !== undefined && response.data.homepage !== null){
+                                if(response.data.homepage !== undefined && response.data.homepage !== ""){
                                     vm.homepage = response.data.homepage; 
                                 }                             
-                                if(response.data.search_engines !== undefined && response.data.search_engines !== null){
+                                if(response.data.search_engines !== undefined && response.data.search_engines !== ""){
                                     vm.search_engines = response.data.search_engines;
                                     var i = 0; 
                                     for(search_engine of vm.search_engines){
@@ -133,12 +199,111 @@
                                     vm.search_engine_class = vm.search_engines[vm.search_engine_id].class;
                                     vm.search_url = vm.search_engines[vm.search_engine_id].url;
                                 }
-                                                           
+                                if(response.data.lang !== undefined && response.data.lang !== ""){
+                                    vm.lang = response.data.lang;
+                                }
+                                if(response.data.qweather_key !== undefined && response.data.qweather_key !== ""){
+                                    vm.qweather_key = response.data.qweather_key;
+                                }
+                                if(response.data.qweather_key2 !== undefined && response.data.qweather_key2 !== ""){
+                                    vm.qweather_key2 = response.data.qweather_key2;
+                                }
+                                if(response.data.city_id !== undefined && response.data.city_id !== ""){
+                                    vm.city_id = response.data.city_id;
+                                }
+                                if(response.data.city_name !== undefined && response.data.city_name !== ""){
+                                    vm.city_name = response.data.city_name;
+                                }
+                                vm.LoadWeather();
                             }              
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
+                    },
+                    LoadWeather: function () {
+                        var vm = this;
+                        if(vm.city_name !== ""){
+                            var url = "https://search.heweather.net/find?location=" + vm.city_name + "&key=" + vm.qweather_key + "&lang=" + vm.lang;
+                            axios.get(url)
+                            .then(function (response) {
+                                if(response.data.HeWeather6[0].status == "ok"){
+                                    vm.city_id = response.data.HeWeather6[0].basic[0].cid;
+                                    
+                                    url = "https://devapi.qweather.com/v7/weather/3d?location=" + vm.city_id + "&key=" + vm.qweather_key2 + "&lang=" + vm.lang;
+                                    axios.get(url)
+                                    .then(function(response) {
+                                        if(response.data.code == "200"){
+                                            vm.city_link = response.data.fxLink;
+                                        }
+                                    });
+
+                                    url = "https://widget-api.heweather.net/s6/plugin/view?location=" + vm.city_id + "&key=" + vm.qweather_key + "&lang=" + vm.lang;
+                                    axios.get(url)
+                                    .then(function (response) {
+                                        if(response.data.status == "ok"){
+                                            data = response.data;
+                                            vm.weather_now.cond_code = data.now.cond_code;
+                                            vm.weather_now.cond_img = "https://cdn.heweather.com/img/plugin/190516/icon/c/" + data.now.cond_code + ((new Date()).getHours()>=18 ? "n" : "d") +".png";
+                                            vm.weather_now.cond_txt = data.now.cond_txt;
+                                            vm.weather_now.tmp = data.now.tmp;
+                                            vm.weather_now.aqi = data.air_now_city.aqi;
+                                            vm.weather_now.qlty = data.air_now_city.qlty;
+                                            if (vm.weather_now.aqi <= 50){
+                                                vm.weather_now.aqiClass = "air-color1";
+                                            }else if(vm.weather_now.aqi <= 100){
+                                                vm.weather_now.aqiClass = "air-color2";
+                                            }else if(vm.weather_now.aqi <= 150){
+                                                vm.weather_now.aqiClass = "air-color3";
+                                            }else{
+                                                vm.weather_now.aqiClass = "air-color4";
+                                            }
+                                            if(data.rain !== undefined){
+                                                vm.weather_now.rain_txt = data.rain.txt;
+                                            }else {
+                                                vm.weather_now.rain_txt = "";
+                                            }
+                                            vm.weather_now.bg = "url(" + "https://cdn.heweather.com/img/plugin/190516/bg/view/" + data.now.cond_code + ((new Date()).getHours()>=18 ? "n" : "d") +".png" + ")";
+
+                                            var weather = document.getElementById("weather");
+                                            weather.style.backgroundImage = vm.weather_now.bg;
+                                            
+                                            vm.weather_forecasts = data.daily_forecast;
+                                            var i = 0;
+                                            var days = ['今天', '明天', '后天'];
+                                            var days_en = ['Today', 'Tomorrow', 'Next day'];
+                                            for (weather of vm.weather_forecasts) {                             
+                                                weather.day = (vm.lang == "zh") ? days[i] : days_en[i];
+                                                // weather.img =  "https://cdn.heweather.com/img/plugin/190516/icon/c/" + ((new Date()).getHours()>=18 ? (data.daily_forecast[i].cond_code_n +"n") : (data.daily_forecast[i].cond_code_d +"d")) +".png";
+                                                weather.img =  "https://cdn.heweather.com/img/plugin/190516/icon/c/" + data.daily_forecast[i].cond_code_d + "d.png";
+                                                if(data.air_forecast !== undefined){
+                                                    weather.aqi = data.air_forecast[i].aqi;
+                                                    weather.qlty = data.air_forecast[i].qlty;
+                                                    if (weather.aqi <= 50){
+                                                        weather.aqiClass = "air-color1";
+                                                    }else if(weather.aqi <= 100){
+                                                        weather.aqiClass = "air-color2";
+                                                    }else if(weather.aqi <= 150){
+                                                        weather.aqiClass = "air-color3";
+                                                    }else{
+                                                        weather.aqiClass = "air-color4";
+                                                    }
+                                                }                                    
+                                                i++;
+                                            }
+                                            document.getElementsByClassName("loading")[0].classList.remove("isActive");
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        console.log(error);
+                                    });                                    
+                                }
+                            });          
+                        }else {
+                            document.getElementsByClassName("loading")[0].classList.remove("isActive");
+                            document.getElementById("weather").classList.remove("isActive");
+                            document.getElementById("message").classList.add("isActive");
+                        }
                     },
                     SearchUrl: function (){
                         this.search_url = this.search_engines[this.search_engine_id].url + this.search_content;
@@ -163,7 +328,7 @@
                 }
             }
 
-            Vue.createApp(app).mount("#app")
+            Vue.createApp(app).mount("#app");
 
         </script>
     </body>

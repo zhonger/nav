@@ -186,6 +186,7 @@ main {
 
 footer #copyright {
   text-align: center;
+  margin-bottom: 30px;
 }
 
 footer #copyright a {
@@ -195,6 +196,200 @@ footer #copyright a {
 footer #copyright a:hover {
   text-decoration: underline;
 }
+
+#weather {
+  margin-top: 50px;
+  width: 450px;
+  height: 150px;
+  font-size: 12px;
+  border-radius: 5px;
+  background-size: 100%;
+  font-family: PingFang SC,Microsoft YaHei,Avenir,Helvetica,Arial,sans-serif;
+  color: #fff;
+  margin: 10px auto;
+  display: none;
+}
+
+#weather .info {
+  padding: 0.5em 1.5em 0.3em 0.7em;
+}
+
+#weather .location {
+  width: 60%;
+  display: inline-block;
+  color: #fff; 
+  font-size: 1.2em;
+}
+
+#weather .location a {
+  color: #fff;
+  text-decoration: none;
+}
+
+#weather .qweather {
+  width: 40%;
+  display: inline-block;
+  text-align: right;
+}
+
+#weather .qweather a{
+  color: #fff;
+}
+
+#weather .left {
+  width: 50%;
+  display: block;
+  float: left;
+  position: relative;
+}
+
+#weather .right{
+  width: 50%;
+  display: block;
+  float: right;
+  position: relative;
+}
+
+#weather .w-now {
+  border-right: 1px solid hsla(0,0%,100%,.2);
+  height: 102.9px;
+  padding: 0.08em 1.3em 0;
+}
+
+#weather .w-now .icon {
+  display: table-cell;
+  float: none;
+  height: 80px;
+}
+
+#weather .w-now .icon img {
+  width: 4em;
+  height: 4em;
+  margin: 0.7em 1em 0.2em 0;
+}
+
+#weather .w-now .content {
+  display: table-cell;
+  float: none;
+  width: 99%;
+  height: 80px;
+  vertical-align: middle;
+}
+
+#weather .w-now .content .tmp {
+  font-size: 1.7em;
+  padding-top: 0.1em;
+}
+
+#weather .w-now .content .txt {
+  margin-top: 0.4em;
+  font-weight: 200;
+}
+
+#weather .w-now .content .txt .aqi {
+   display: block;
+   float: right;
+   font-weight: 400;
+}
+
+#weather .w-now .content .txt .aqi:before {
+  content: "|";
+  padding-right: 5px;
+}
+
+#weather .w-now .now-rain div {
+  display: table-cell;
+}
+
+#weather .w-now .now-rain img {
+  width: 1.4em;
+}
+
+#weather .w-now .now-rain .rain-txt {
+  vertical-align: top;
+  font-weight: 300;
+  padding-left: 5px;
+  display: table-cell;
+}
+
+#weather .forecast .item {
+  height: 101.9px;
+  text-align: center;
+  display: table;
+  float: left;
+  position: relative;
+  width: 33.33333333%;
+  padding-left: 0;
+  font-weight: 300;
+  margin: 0;
+}
+
+#weather .forecast .item li {
+  list-style: none;
+  font-weight: 400;
+}
+
+#weather .forecast .item img{
+  width: 1.8em;
+  margin: auto;
+  display: table-row;
+  padding: 1.2em 0;
+  vertical-align: middle;
+}
+
+#weather .air-color1{
+  color: #94ce6f;
+}
+
+#weather .air-color2{
+  color: #e4c600;
+}
+
+#weather .air-color3{
+  color: #94ce6f;
+}
+
+#weather .air-color4{
+  color: #94ce6f;
+}
+
+.loading {
+  width: 450px;
+  height: 150px;
+  line-height: 150px;
+  background-color: #efefef;
+  font-size: 1.5em;
+  font-weight: 500;
+  position: absolute;
+  margin: 10px auto;
+  text-align: center;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: none;
+}
+
+.loading img {
+  margin-top: -30px;
+}
+
+.isActive {
+  display: block!important;
+}
+
+#message {
+  width: 450px;
+  height: 150px;
+  line-height: 150px;
+  background-color: #efefef;
+  font-size: 1.5em;
+  font-weight: 500;
+  margin: 10px auto;
+  text-align: center;
+  z-index: 1;
+  display: none;
+}
+
 
 @media screen and (max-width: 600px) {
   #app {
@@ -221,5 +416,18 @@ footer #copyright a:hover {
 
   footer #copyright {
     font-size: 0.6em;
+  }
+
+  #weather {
+    width: auto;
+    border-radius: 0;
+  }
+
+  .loading {
+    width: auto;
+  }
+
+  #message {
+    width: auto;
   }
 }

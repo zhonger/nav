@@ -2,7 +2,12 @@
     "author": "zhonger",
     "homepage": "https://lisz.me",
     "header": "明月几时有，把酒问青天。",
-    "header_auto": true,
+    "header_auto": false,
+    "lang": "en",
+    "qweather_key": "fe7ebd5f6517481d8443f020f7ecd7ef",
+    "qweather_key2": "d69076a225bb4dd29a8af66a0bc1d8b4",
+    "city_id": "",
+    "city_name": "Shanghai",
     "search_engines": [
         {
             "name": "Google 搜索",
@@ -40,7 +45,7 @@
                 },
                 {
                     "name": "谷歌学术",
-                    "url": "https://scholar.google.com"
+                    "url": "https://scholar.google.co.jp"
                 }
             ]
         },
