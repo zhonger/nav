@@ -1,4 +1,4 @@
-# zhonger/nav:1.0.0
+# zhonger/nav:1.1.0
 
 English Version / [中文简体](README.zh.md)
 
@@ -7,11 +7,15 @@ English Version / [中文简体](README.zh.md)
   - [Easy to use and mange](#easy-to-use-and-mange)
   - [Simple and beautiful](#simple-and-beautiful)
   - [Scaleable](#scaleable)
-
+  - [Languages](#languages)
+  - [Weather](#weather)
+  
 - [Usages](#usages)
   - [Change the owner and basis settings](#change-the-owner-and-basis-settings)
   - [Change the links](#change-the-links)
   - [Change the search engines](#search-the-search-engines)
+  - [Change the language](#change-the-language)
+  - [Change the city of weather](#change-the-city-of-weather)
 
 # Introduction
 
@@ -44,6 +48,20 @@ Because it's based on static files, someone maybe think that it's a little diffi
 However, thanks to `VueJS` we can mange the links or search engines very easily by chaning the content in `sites.json`. It means that you can set any search engines you know.
 
 Except this, **Nav** followed the website icon method in [eallion/favorite](https://github.com/eallion/favorite), which works with the help of `Google`. It supports  any public websites which can be accessed by `Google`.
+
+### Languages
+
+It supports two languages, Chinese and English. The default language is Chinese.
+
+If a setting of the language is set in the `sites.json` file, it will change the lanuage of weather area and copyright.
+
+### Weather
+
+A plugin provided by [Qweather](https://www.qweather.com) but reconstructed the code to support all cities in China and most cities in the world.
+
+In order to make the page normally before all contents complied, a lazy-loading has been used.
+
+If the city has not been set or successfully, a message will instead the weather area.
 
 # Usages
 
@@ -133,3 +151,30 @@ For each search engine, there are three important keys -- `name`, `class` and `u
     ]
 }
 ```
+
+### Change the language
+
+Here is a sample for the language.
+
+Because the setting of the lanuage will work for not only the main content but also the weather area, we need to use `zh` or `en`. By the way, any other language settings will be regarded as `en`.
+
+```json
+{
+  "lang": "zh"
+}
+```
+
+### Change the city of weather
+
+Here is a sample for the weather.
+
+As the following settings show, we have to apply two API keys from [Qweather](https://www.qweather.com) when we deploy the navigation site for ourselves. The first key `qweather_key` is the web plugin API key (s6 version, which will be not supported after Dec. 2022). Another key `qweather_key2` is the web application API key (v7 version, which is the last version of Qweather API, but limited for getting the air quality until now).
+
+```json
+{
+  "qweather_key": "xxxxxxxxxx",
+  "qweather_key2": "sxwewewewew",
+  "city_name": "Shanghai"
+}
+```
+
