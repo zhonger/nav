@@ -1,4 +1,4 @@
-# zhonger/nav: 1.1.0
+# zhonger/nav: 1.1.1
 
 [English Version](README.md) / 中文简体
 
@@ -74,9 +74,12 @@
 
 尽管 **Nav** 采用了[今日诗词](https://www.jinrishici.com) 提供的免费一句诗 API，但是或许不是所有人想要这个功能。所以如果你想要关闭这个功能的话，你可以将 `header_auto` 字段设置为 `false`。然后 `header` 字段中的内容将会生效。你可以使用任何一句话或者词来替换这个字段。
 
+目前已支持自定义页面标题，只需要修改基础配置中 `title` 字段即可。
+
 ```json
 {
     "author": "zhonger",
+  	"title": "自定义标题",
     "homepage": "https://lisz.me",
     "header": "明月几时有，把酒问青天。",
     "header_auto": true,
@@ -91,11 +94,15 @@
 
 对于添加或修改链接，你可以非常容易地做到。你所需要做的就是准备好链接的名称、链接地址以及所属的定义好的类别或者版块。然后 `Google` 会帮助找到你设定好的链接的图标。
 
+目前已支持版块图标的自定义修改，只需要先声明 `link_ico` 为 `true` 然后在每个版块中添加字段 `ico` 即可。这里我们建议使用 `svg` 格式的图标，因为 `svg` 图标具有大小可扩展和清晰度高的特点。如果你不知道去哪里找适合的图标，或许在 [icon-icons.com](https://icon-icons.com) 或者 [ICONPACKS](https://www.iconpacks.net) 上可以找到你想要的免费图标。
+
 ```json
 {
+  "link_ico": true,
   "links": [
         {
             "type": "常用网站1",
+          	"ico": "images/airport-location.png",
             "sites": [
                 {
                     "name": "博客",
@@ -109,6 +116,7 @@
         },
         {
             "type": "常用网站2",
+          	"ico": "images/chronometer.svg",
             "sites": [
                 {
                     "name": "筑波大学",
@@ -134,17 +142,22 @@
 
 对于每一个搜索引擎而言，都必须有三个重要的字段 -- `name`、`class`和`url`。`name` 会出现在你点击搜索引擎图标并弹出全部搜索引擎的列表的时候。`class` 实际上是搜索引擎的图标。这里提供了 `Icofont` 和 `Font-Awesome` 两个字体图标库。你可以通过访问 [Icofont](https://icofont.com/icons) 和 [Font Awesome](https://fontawesome.com/v5.15/icons) 来找到你想要用的图标。或许这两个字体图标库中的图标也并不完整，而此处暂不支持自定义搜索引擎的图标，所以在下一个版本中可能会对此进行改进。最后的 `url` 是最重要的字段。如果这个字段给的不是那么准确，那么很有可能你就无法正常访问搜索引擎或无法找到你想要搜索的结果。
 
+目前已支持搜索引擎图标的自定义修改，只需要先声明 `search_ico` 为 `true` 然后在每个搜索引擎中添加字段 `ico` 即可。这里我们建议使用 `svg` 格式的图标，因为 `svg` 图标具有大小可扩展和清晰度高的特点。如果你不知道去哪里找适合的图标，或许在 [icon-icons.com](https://icon-icons.com) 或者 [ICONPACKS](https://www.iconpacks.net) 上可以找到你想要的免费图标。
+
 ```json
 {
+  "search_ico": true,
   "search_engines": [
         {
             "name": "Google 搜索",
             "class": "fa fa-google",
+          	"ico": "images/google.svg",
             "url": "https://www.google.co.jp/search?q="
         },
         {
             "name": "必应搜索",
             "class": "icofont icofont-brand-bing",
+          	"ico": "images/bing.svg",
             "url": "https://bing.com/search?q="
         }
     ]

@@ -1,4 +1,4 @@
-# zhonger/nav:1.1.0
+# zhonger/nav:1.1.1
 
 English Version / [中文简体](README.zh.md)
 
@@ -75,9 +75,12 @@ In this sample, `author` means your name or nickname, which will appear in the c
 
 Although **Nav** provides one chinese poem, it may be not so good for anyone. So if your want to disable this feature, you can just set `header_auto` into `false`. Then the `header` setting will be used. You can use any sentences or words you like to replace it. 
 
+Now the page title can also be customized by changing the content of `title` in the basis settings.
+
 ```json
 {
     "author": "zhonger",
+    "title": "Novel navigation site",
     "homepage": "https://lisz.me",
     "header": "明月几时有，把酒问青天。",
     "header_auto": true,
@@ -92,27 +95,32 @@ First of all, you have to include it in one type for each favorite link. Here yo
 
 It's very easy to add or change a link. What you need is just to prepare a name and url with one defined type. Then `Google` will help to find the icon for the link you set.
 
+Now you can customize icons for each links type very easily. You have to set `link_ico` to `true` firstly. And then add `ico` in the each type. Here we suggest to use `svg` icon because it's more scaleable and clear. If you don't know how to find appropriate `svg` icons, you may find what you want for free in [icon-icons.com](https://icon-icons.com/) or [ICONPACKS](https://www.iconpacks.net/).
+
 ```json
 {
+  "link_ico": true,
   "links": [
         {
-            "type": "常用网站1",
+            "type": "Usually",
+          	"ico": "images/airport-location.png",
             "sites": [
                 {
-                    "name": "博客",
+                    "name": "Blog",
                     "url": "https://lisz.me"
                 },
                 {
-                    "name": "谷歌学术",
-                    "url": "https://scholar.google.com"
+                    "name": "Google Scholar",
+                    "url": "https://scholar.google.co.jp"
                 }
             ]
         },
         {
-            "type": "常用网站2",
+            "type": "Common",
+          	"ico": "images/chronometer.svg",
             "sites": [
                 {
-                    "name": "筑波大学",
+                    "name": "University of Tsukuba",
                     "url": "https://www.tsukuba.ac.jp"
                 },
                 {
@@ -135,17 +143,22 @@ Here the search engine settings just provide a way to define any search engines 
 
 For each search engine, there are three important keys -- `name`, `class` and `url`. The `name` appears only when you click the search engine icon and get the list of all search engines. The `class` actually is the icon of the search engine. `Icofont` and `Font-Awesome` have beend used here. Your can find which icon you want to use by visiting [Icofont](https://icofont.com/icons) and [Font Awesome](https://fontawesome.com/v5.15/icons). Maybe it's still limited. An improvement about this may will appear in the next version. Finally, the `url` is the most important thing. If the url is not so right, you will cannot access or find your results you want.
 
+Now **nav** has supported customized search engine icons (not only font icon). If you would like to use customized seach engine icons, you have to set `search_ico` to `true` firstly (default is `false`). And then add `ico` in the `search_engines`. Here we suggest to use `svg` icon because it's more scaleable and clear. If you don't know how to find appropriate `svg` icons, you may find what you want for free in [icon-icons.com](https://icon-icons.com/) or [ICONPACKS](https://www.iconpacks.net/).
+
 ```json
 {
+  "search_ico": true,
   "search_engines": [
         {
-            "name": "Google 搜索",
+            "name": "Google",
             "class": "fa fa-google",
+          	"ico": "images/google.svg",
             "url": "https://www.google.co.jp/search?q="
         },
         {
-            "name": "必应搜索",
+            "name": "Bing",
             "class": "icofont icofont-brand-bing",
+          	"ico": "images/bing.svg",
             "url": "https://bing.com/search?q="
         }
     ]
@@ -177,4 +190,3 @@ As the following settings show, we have to apply two API keys from [Qweather](ht
   "city_name": "Shanghai"
 }
 ```
-
