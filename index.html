@@ -3,7 +3,7 @@
     <head>        
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title> zhongerのPage </title>
+        <title></title>
         <meta name="author" content="zhonger">
         <meta name="description" content="个人导航页，纯静态。">
         <meta name="keywords" content="zhonger，zhonger的个人导航页，vuejs，静态">
@@ -13,9 +13,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">       
-        <link rel="stylesheet" href="icofont.min.css">
-        <link rel="stylesheet" href="nav.css">
-        
+        <link rel="stylesheet" href="css/icofont.min.css">
+        <link rel="stylesheet" href="css/nav.css">
     </head>
     <body>
         <div id="app" v-cloak>
@@ -27,19 +26,21 @@
                     {{ header }}
                 </div>
                 <div id="search">
-                    <div id="search-form">
-                        <a class="search-engine" @click="Dropdown"><i v-bind:class="search_engine_class"></i></a>           
+                    <div id="search-form">         
+                        <a class="search-engine" @click="Dropdown" v-if="search_ico"><img v-bind:src="search_engine_ico" class="search-ico active"/></a>     
+                        <a class="search-engine" @click="Dropdown" v-else><i v-bind:class="search_engine_class"></i></a>         
                         <input v-model="search_content" class="search-content" type="text" placeholder="Search ..." @input="SearchUrl" v-on:keyup.enter="Submit" :maxlength="max">
                         <a v-bind:href="search_url" class="search-button" target="_blank" rel="noreferrer"><i class="icofont-search-1"></i></a>
                     </div>                    
                     <div id="search-engines">
                         <div id="dropdown" class="dropdown-content">
-                            <a v-for="search_engine in search_engines" class="ico" @click="ChangeSearchEngine(search_engine.id, $event)" id=""><i v-bind:class="search_engine.class"></i> {{ search_engine.name }} </a>
+                            <a v-for="search_engine in search_engines" class="ico" @click="ChangeSearchEngine(search_engine.id, $event)" v-if="search_ico"><img v-bind:src="search_engine.ico" class="search-ico"/> <span> {{ search_engine.name }} </span> </a>
+                            <a v-for="search_engine in search_engines" class="ico" @click="ChangeSearchEngine(search_engine.id, $event)" v-else><i v-bind:class="search_engine.class"></i> {{ search_engine.name }} </a>
                         </div>
                     </div>
                 </div>
             </head>
-            <div class="loading isActive"> <img src="loading.gif" alt=""> </div>
+            <div class="loading isActive"> <img src="images/loading.gif" alt=""> </div>
             <div id="message">
                 <span v-if="lang === 'zh'">抱歉，无法找到设定的城市!</span>
                 <span v-else>The city cannot be found!</span>
@@ -97,7 +98,8 @@
                 <div id="sites">
                     <div class="container">
                         <div class="bar" v-if="!isNull" v-for="item in items">
-                            <div class="title"> <i class="icofont icofont-compass"></i> {{ item.type }} </div>
+                            <div class="title" v-if="link_ico"> <img v-bind:src="item.ico" class="title-ico" /> {{ item.type }} </div>
+                            <div class="title" v-else> <i class="icofont icofont-compass"></i> {{ item.type }} </div>
                             <div class="card" v-for="site in item.sites">                                
                                 <a v-bind:href="site.url" target="_blank" class="name" rel="noreferrer"> <span class="icon"><img v-bind:src="site.icon" alt="ico"></span> {{ site.name }} </a>
                             </div>
@@ -115,12 +117,10 @@
             </footer>
         </div>
 
-
         <script nonce="r4sdsdn" src="https://cdn.jsdelivr.net/npm/vue@3.2.11/dist/vue.global.prod.min.js"></script>
         <script nonce="723da1e" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         
         <script>
-
             const app = {
                 data() {       
                     return {
@@ -129,12 +129,16 @@
                         isNull: true,
                         items: [],
                         author: "zhonger",
+                        title: "zhonger's page",
                         homepage: "https://lisz.me",
+                        search_ico: false,
                         search_engines: [],
                         search_engine_id: 0,
                         search_content: "",
+                        search_engine_ico: "",
                         search_engine_class: "",
                         search_url:"",
+                        link_ico: false, 
                         max: 225,
                         lang: "zh",
                         qweather_key: "fe7ebd5f6517481d8443f020f7ecd7ef",
@@ -185,18 +189,36 @@
                                 if(response.data.author !== undefined && response.data.author !== ""){
                                     vm.author = response.data.author; 
                                 }
+                                if(response.data.title !== undefined && response.data.title !== ""){
+                                    vm.title = response.data.title;
+                                    document.title = vm.title;
+                                }
                                 if(response.data.homepage !== undefined && response.data.homepage !== ""){
                                     vm.homepage = response.data.homepage; 
+                                }                             
+                                if(response.data.link_ico !== undefined && response.data.link_ico !== ""){
+                                    vm.link_ico = response.data.link_ico; 
+                                }                             
+                                if(response.data.search_ico !== undefined && response.data.search_ico !== ""){
+                                    vm.search_ico = response.data.search_ico; 
                                 }                             
                                 if(response.data.search_engines !== undefined && response.data.search_engines !== ""){
                                     vm.search_engines = response.data.search_engines;
                                     var i = 0; 
                                     for(search_engine of vm.search_engines){
                                         search_engine.id = i;
-                                        search_engine.class = search_engine.class;
+                                        if(response.data.search_ico){
+                                            search_engine.ico = search_engine.ico;
+                                        }else{
+                                            search_engine.class = search_engine.class;
+                                        }                                        
                                         i++;
                                     }
-                                    vm.search_engine_class = vm.search_engines[vm.search_engine_id].class;
+                                    if(response.data.search_ico){
+                                        vm.search_engine_ico = vm.search_engines[vm.search_engine_id].ico;
+                                    }else{
+                                        vm.search_engine_class = vm.search_engines[vm.search_engine_id].class;
+                                    }                                    
                                     vm.search_url = vm.search_engines[vm.search_engine_id].url;
                                 }
                                 if(response.data.lang !== undefined && response.data.lang !== ""){
@@ -321,7 +343,13 @@
                     },
                     ChangeSearchEngine: function (id, event){
                         this.search_engine_id = id;
-                        this.search_engine_class = this.search_engines[this.search_engine_id].class;
+
+                        if(this.search_ico){
+                            this.search_engine_ico = this.search_engines[this.search_engine_id].ico;
+                        }else {
+                            this.search_engine_class = this.search_engines[this.search_engine_id].class;
+                        }
+                        
                         this.search_url = this.search_engines[this.search_engine_id].url + this.search_content;
                         document.getElementById("dropdown").classList.toggle("show");
                     }
@@ -329,7 +357,6 @@
             }
 
             Vue.createApp(app).mount("#app");
-
         </script>
     </body>
 </html>

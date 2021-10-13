@@ -43,6 +43,27 @@ a {
   margin: 0 auto;
 }
 
+#search .search-ico{
+  width: 24px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+#search .search-ico.active{
+  vertical-align: baseline;
+  opacity: 0.2;
+  filter: grayscale(100%);
+}
+
+#search .search-ico.active:hover{
+  filter: none;
+  opacity: 1;
+}
+
+#search .fa {
+  padding-right: 10px;
+}
+
 #search .search-engine {
   background-color: #fff;
   padding: 8px 18px;
@@ -158,6 +179,11 @@ main {
 .title {
   font-size: 1.2em;
   margin-bottom: 10px;
+}
+
+.title .title-ico {
+  width: 16px;
+  padding-right: 10px;
 }
 
 .title .icofont {

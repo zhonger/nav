@@ -1,43 +1,52 @@
 {
     "author": "zhonger",
+    "title": "Novel navigation site",
     "homepage": "https://lisz.me",
     "header": "明月几时有，把酒问青天。",
-    "header_auto": false,
-    "lang": "en",
+    "header_auto": true,
+    "lang": "zh",
     "qweather_key": "fe7ebd5f6517481d8443f020f7ecd7ef",
     "qweather_key2": "d69076a225bb4dd29a8af66a0bc1d8b4",
     "city_id": "",
     "city_name": "Shanghai",
+    "search_ico": true,
+    "link_ico": true,
     "search_engines": [
         {
             "name": "Google 搜索",
             "class": "fa fa-google",
+            "ico": "images/google.svg",
             "url": "https://www.google.co.jp/search?q="
         },
         {
             "name": "必应搜索",
             "class": "icofont icofont-brand-bing",
+            "ico": "images/bing.svg",
             "url": "https://bing.com/search?q="
         },
         {
             "name": "Steam 搜索",
             "class": "icofont icofont-brand-steam",
-            "url": "https://bing2.com/search?q="
+            "ico": "images/steam.svg",
+            "url": "https://store.steampowered.com/search?term="
         },
         {
-            "name": "Omega 搜索",
-            "class": "icofont icofont-brand-omega",
-            "url": "https://bing3.com/search?q="
+            "name": "百度搜索",
+            "class": "icofont icofont-baidu-tieba",
+            "ico": "images/baidu.svg",
+            "url": "https://baidu.com/s?word="
         },
         {
             "name": "IMDB 搜索",
             "class": "icofont icofont-brand-imdb",
-            "url": "https://bing4.com/search?q="
+            "ico": "images/imdb.svg",
+            "url": "https://www.imdb.com/find?q="
         }
     ],
     "links": [
         {
             "type": "常用网站1",
+            "ico": "images/airport-location.png",
             "sites": [
                 {
                     "name": "博客",
@@ -51,6 +60,7 @@
         },
         {
             "type": "常用网站2",
+            "ico": "images/chronometer.svg",
             "sites": [
                 {
                     "name": "筑波大学",
